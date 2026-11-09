@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>GenAI Vocabulary Usage Graph</title>
+    <script type="text/javascript" src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
+    <style type="text/css">
+        #mynetwork {
+            width: 1000px;
+            height: 600px;
+            border: 1px solid lightgray;
+            background-color: #f9f9f9;
+        }
+    </style>
+</head>
+<body>
+    <h2>Vocabulary Usage in Research Report</h2>
+    <p>Node sizes indicate usage frequency (explicit and implicit) in the report.</p>
+    <div id="mynetwork"></div>
+
+    <script type="text/javascript">
+        // Nodes: Terms and Report Sections
+        var nodes = new vis.DataSet([
+            { id: 1, label: 'GenAI', group: 'term', value: 5 },
+            { id: 2, label: 'LLM', group: 'term', value: 2 },
+            { id: 3, label: 'Prompt Engineering', group: 'term', value: 2 },
+            { id: 4, label: 'Hallucination', group: 'term', value: 3 },
+            { id: 5, label: 'RAG', group: 'term', value: 2 },
+            { id: 6, label: 'Context Window', group: 'term', value: 2 },
+            { id: 7, label: 'Fine-Tuning', group: 'term', value: 2 },
+            { id: 100, label: 'Report: Code Generation', group: 'report', value: 4, shape: 'box' },
+            { id: 101, label: 'Report: Customer Support', group: 'report', value: 4, shape: 'box' },
+            { id: 102, label: 'Report: Content Generation', group: 'report', value: 4, shape: 'box' }
+        ]);
+
+        // Edges: Relationships between terms and sections
+        var edges = new vis.DataSet([
+            { from: 1, to: 100, label: 'Implicit', dashes: true },
+            { from: 1, to: 101, label: 'Explicit', width: 2 },
+            { from: 1, to: 102, label: 'Explicit', width: 2 },
+            { from: 6, to: 100, label: 'Explicit', width: 2 },
+            { from: 4, to: 100, label: 'Explicit', width: 2 },
+            { from: 4, to: 101, label: 'Explicit', width: 2 },
+            { from: 2, to: 101, label: 'Explicit', width: 2 },
+            { from: 5, to: 101, label: 'Explicit', width: 2 },
+            { from: 3, to: 102, label: 'Explicit', width: 2 },
+            { from: 7, to: 102, label: 'Explicit', width: 2 }
+        ]);
+
+        var container = document.getElementById('mynetwork');
+        var data = { nodes: nodes, edges: edges };
+        var options = {
+            nodes: {
+                scaling: { min: 10, max: 30 },
+                font: { size: 14 }
+            },
+            groups: {
+                term: { color: { background: '#97C2FC', border: '#2B7CE9' }, shape: 'dot' },
+                report: { color: { background: '#FF9999', border: '#cc0000' } }
+            },
+            physics: { barnesHut: { gravitationalConstant: -2000, springLength: 200 } }
+        };
+        var network = new vis.Network(container, data, options);
+    </script>
+</body>
+</html>
